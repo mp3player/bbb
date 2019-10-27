@@ -6,15 +6,12 @@ export default class DrawTool extends Draw{
         this.i = 0
     }
     render(){
-        if(this.i % 2 == 0){
+        if(this.i % 1 == 0){
             this.pen.clearRect(0,0,this.pen.canvas.width,this.pen.canvas.height)
-            this.queue.traverse((d,i) => {
-
+            this.stack.traverse((d,i) => {
                 this.repaint(d.d)
             })
         }
-
-
         requestAnimationFrame(this.render.bind(this))
         this.i++
     }

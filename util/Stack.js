@@ -4,7 +4,7 @@ export default class Stack {
         this.c = 0
     }
     put(val){
-        this.d.push(val)
+        this.d.push({n:this.c,d:val})
         this.c++
     }
     out(){

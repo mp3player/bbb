@@ -1,17 +1,21 @@
 import Shape from "./Shape";
 import Queue from "./Queue";
+import Stack from "./Stack";
 
 export default class Draw extends Shape{
     constructor(pen){
         super()
         this.pen = pen
         this.canvas = this.pen.canvas
-        this.queue = new Queue()
+        this.stack = new Stack()
     }
-    tmpPaint(c){
-        //临时绘制
-    }
-    paint(c) {
+
+    paint(conf) {
+        let c = null
+        if(!conf)
+            c = this.config
+        else
+            c = conf
         var config = null
         switch (c.s) {
             case Shape.POLYGON:{
@@ -19,18 +23,23 @@ export default class Draw extends Shape{
             }break;
             case Shape.LINE:{
                 config = this.line(c)
+                console.log(config);
             }break;
             case Shape.ARC:{
                 config = this.arc(c)
             }break;
+            case Shape.RECT:{
+                config = this.rect(c)
+            }break;
+            case Shape.CIRCLE:{
+                config = this.circle(c)
+            }break;
             default:{
-                config = c
+                config = c ? c : this.config
             }
         }
         var type = config.type
-
         this.pen.save()
-
         this.pen.beginPath()
         if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
         if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
@@ -55,9 +64,10 @@ export default class Draw extends Shape{
         this.pen.closePath()
         this.pen.restore()
 
-        //add these config to queue
+        //add these config to stack
 
-        this.queue.put(config)
+        this.stack.put(config)
+
     }
     repaint(c){
         var config = null
@@ -104,5 +114,8 @@ export default class Draw extends Shape{
         this.pen.closePath()
         this.pen.restore()
 
+    }
+    out(){
+        return this.stack.out()
     }
 }

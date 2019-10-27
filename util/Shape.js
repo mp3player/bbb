@@ -6,6 +6,8 @@ export default class Shape {
     static POLYGON = 'polygon'
     static LINE = 'line'
     static ARC = 'arc'
+    static RECT = 'rect'
+    static CIRCLE = 'circle'
 
     constructor(){
         this.config = {
@@ -42,9 +44,9 @@ export default class Shape {
          *
          */
         const conf = this.config
-        return {...conf,...config,s:'line'}
+        return {...conf,...config}
     }
-    polygon(config,type=Shape.FILL){
+    polygon(config){
         /**@param config
          * config
          *      points      :   Array
@@ -65,7 +67,7 @@ export default class Shape {
          *
          */
         const conf = this.config
-        return {...conf,...config,s:'p'}
+        return {...conf,...config}
     }
     arc(config){
         /**@param config
@@ -124,5 +126,93 @@ export default class Shape {
 
 
         return {...conf,...config,points}
+    }
+    rect(config){
+        if(config == null){
+            return
+        }
+        /**@param config
+         * config
+         *      color       :   String
+         *      lineWidth   :   Number
+         *      alpha       :   Number
+         *      shadow      :   Object
+         *          {
+         *              x       :   Number
+         *              y       :   Number
+         *              blur    :   Number
+         *              color   :   any
+         *          }
+         *      lineCap     :   String
+         *      lineJoin    :   String
+         *      lineDash    :   Array,
+         *
+         *      segments    :   Number
+         *      origin      :   Array
+         *      radius      :   Number
+         *      startAngle  :   Number
+         *      endAngle    :   Number
+         *
+         */
+        const conf = this.config
+        config.points.push(config.points[0])
+
+        return {...conf,...config,s:'p'}
+    }
+    circle(config){
+        /**@param config
+         * config
+         *      color       :   String
+         *      lineWidth   :   Number
+         *      alpha       :   Number
+         *      shadow      :   Object
+         *          {
+         *              x       :   Number
+         *              y       :   Number
+         *              blur    :   Number
+         *              color   :   any
+         *          }
+         *      lineCap     :   String
+         *      lineJoin    :   String
+         *      lineDash    :   Array,
+         *
+         *      segments    :   Number
+         *      origin      :   Array
+         *      radius      :   Number
+         *      startAngle  :   Number
+         *      endAngle    :   Number
+         *
+         */
+        if(config == null){
+            return
+        }
+        const points = []
+
+        const angleOffset = 360 * Math.PI / 180
+
+        var o = [config.origin[0],config.origin[1]]
+        var r = config.radius
+
+        const segments = config.segments ? config.segments : (r * (angleOffset * Math.PI / 180))
+
+        for(var i=0;i<=segments;i++){
+            var cos = Math.cos(angleOffset / segments * i)
+            var sin = Math.sin(angleOffset / segments * i)
+
+            var x = r * cos
+            var y = r * sin
+
+            points.push([
+                o[0] + x,
+                o[1] + y
+            ])
+        }
+
+        let conf = this.config
+
+        return {...conf,...config,points}
+    }
+    ellipsis(config){
+
     }
 }
