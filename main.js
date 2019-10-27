@@ -10,18 +10,24 @@ var shape = new Shape(pen)
 
 const arc = shape.arc()
 
-shape.draw({
+shape.paint({
     color:'purple',
     lineWidth:2,
     origin:[100,100],
     radius:100,
     startAngle:0,
     endAngle:90,
-    segments:2,
-    type:Shape.STROKE,
+    segments:10,
+    type:Shape.FILL,
     s:Shape.ARC
 })
-
+shape.paint({
+    color:'blue',
+    lineWidth:2,
+    points:[[100,100],[200,200],[300,400]],
+    type:Shape.FILL,
+    s:Shape.POLYGON
+})
 shape.render()
 
 
