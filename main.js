@@ -2,6 +2,7 @@ import DrawTool from './util/DrawTool'
 import {select,selectAll,event,off,render} from "./util/query";
 
 import './scss/tool.scss'
+import './scss/normal.scss'
 
 const canvas = document.querySelector('#canvas')
 canvas.width = innerWidth

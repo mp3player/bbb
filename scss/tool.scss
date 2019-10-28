@@ -20,4 +20,16 @@
       }
     }
   }
+  .conf{
+    background:#003333;width:280px;color:white;position:absolute;top:100px;right:0;
+    ul{
+      list-style: none;max-height: 700px;overflow: auto;
+      li{
+        height:40px;line-height: 40px;text-align: center;border:1px solid #E3E3E3;transition:all .2s linear;cursor: pointer;
+        span{
+          &:nth-child(1){display: inline-block;min-width: 80px;}
+        }
+      }
+    }
+  }
 }
