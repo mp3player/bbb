@@ -23,7 +23,6 @@ export default class Draw extends Shape{
             }break;
             case Shape.LINE:{
                 config = this.line(c)
-                console.log(config);
             }break;
             case Shape.ARC:{
                 config = this.arc(c)

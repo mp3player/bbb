@@ -1,6 +1,7 @@
 //generate standard shape data
 
 export default class Shape {
+
     static STROKE = 'stroke'
     static FILL = 'fill'
     static POLYGON = 'polygon'

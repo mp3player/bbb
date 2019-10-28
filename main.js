@@ -1,4 +1,5 @@
 import DrawTool from './util/DrawTool'
+import {select,selectAll,event,off,render} from "./util/query";
 
 import './scss/tool.scss'
 
@@ -15,10 +16,10 @@ shape.paint({
     color:'purple',
     lineWidth:2,
     origin:[100,100],
-    radius:100,
+    radius:500,
     startAngle:0,
     endAngle:90,
-    segments:10,
+    segments:100,
     type:DrawTool.FILL,
     s:DrawTool.ARC
 })
@@ -41,15 +42,14 @@ const s = {
 }
 let shapes = s.LINE
 console.log(shape.stack);
-canvas.onmousedown = function(e){
+event(canvas,'mousedown',function(e){
     let x = e.x
     let y = e.y
     shape.paint({})
     let p = []
-    document.onmousemove = function(e){
+    event(document,'mousemove',function(e){
         //出栈
         shape.out()
-
         switch (shapes) {
             case s.POLYGON:{
                 shape.paint()
@@ -58,7 +58,7 @@ canvas.onmousedown = function(e){
                 shape.paint({
                     origin:[x,y],
                     radius:Math.sqrt(Math.pow(e.x - x,2) + Math.pow(e.y - y ,2)),
-                    type:DrawTool.STROKE,
+                    type:DrawTool.FILL,
                     lineWidth:4,
                     s:DrawTool.CIRCLE,
                     segments:100,
@@ -99,44 +99,53 @@ canvas.onmousedown = function(e){
                 shape.paint()
             }break;
         }
-    }
-    document.onmouseup = function(){
-        document.onmousemove = null
-        document.onmouseup = null
+    })
+    event(document,'mouseup',function(){
+        off(document,'mousemove')
+        off(document,'mouseup')
+        //渲染一次状态栏
 
-    }
-}
+        render(shape.stack.d.map((d,i) => {
+            return d.d.s
+        }),'#tool .stack .shape-list','li')
+
+        //取消事件，
+
+    })
+})
 document.body.onload = () => {
-    document.body.querySelectorAll('#tool .shape p').forEach((d,i) => {
+    selectAll('#tool .shape p').forEach((d,i) => {
 
         d.onclick = function(e){
             shapes = s[this.dataset.shape]
-            document.body.querySelectorAll('#tool .shape p').forEach((d,i) => {
+            selectAll('#tool .shape p').forEach((d,i) => {
                 d.style.background = '#003333'
             })
             this.style.background = 'red'
         }
     })
-    document.body.querySelector('#tool .shape').onmousedown = function(e){
-        //获取宽高
-        const width = this.offsetWidth
-        const height = this.offsetHeight
-        //计算偏移
-        const disX = e.x - this.offsetLeft
-        const disY = e.y - this.offsetTop
 
-        console.log(width,height)
-        document.onmousemove = (e) => {
-            this.style.position = 'absolute'
-            this.style.left = e.x - disX + 'px'
-            this.style.top = e.y - disY + 'px'
+    selectAll('#tool .draggable').forEach((d,i) => {
+        d.onmousedown = function(e){
+            //获取宽高
+            const width = this.offsetWidth
+            const height = this.offsetHeight
+            //计算偏移
+            const disX = e.x - this.offsetLeft
+            const disY = e.y - this.offsetTop
 
+            document.onmousemove = (e) => {
+                this.style.position = 'absolute'
+                this.style.left = e.x - disX + 'px'
+                this.style.top = e.y - disY + 'px'
+
+            }
+            document.onmouseup = function(){
+                document.onmouseup = null
+                document.onmousemove = null
+            }
         }
-        document.onmouseup = function(){
-            document.onmouseup = null
-            document.onmousemove = null
-        }
-    }
+    })
 }
 
 
