@@ -1,5 +1,5 @@
 import DrawTool from './util/DrawTool'
-import {select,selectAll,event,off,render} from "./util/query";
+import {select, selectAll, event, off, render, css, attr, set,get} from "./util/query";
 
 import './scss/tool.scss'
 import './scss/normal.scss'
@@ -42,6 +42,7 @@ const s = {
     PEN:'PEN'
 }
 let shapes = s.LINE
+const config = {color:'',lineWidth:0,alpha:1,type:DrawTool.FILL}
 
 event(canvas,'mousedown',function(e){
     let x = e.x
@@ -59,41 +60,35 @@ event(canvas,'mousedown',function(e){
                 shape.paint({
                     origin:[x,y],
                     radius:Math.sqrt(Math.pow(e.x - x,2) + Math.pow(e.y - y ,2)),
-                    type:DrawTool.FILL,
-                    lineWidth:4,
                     s:DrawTool.CIRCLE,
                     segments:100,
-                    color:'cyan'
+                    ...config
                 })
             }break;
             case s.RECT :{
                 p = [[x,y],[e.x,y],[e.x,e.y],[x,e.y]]
                 shape.paint({
                     points:p,
-                    type:DrawTool.STROKE,
-                    lineWidth:4,
                     s:DrawTool.RECT,
-                    color:'red'
+                    ...config
                 })
             }break;
             case s.LINE:{
                 p = [[x,y],[e.x,e.y]]
                 shape.paint({
                     points:p,
-                    type:DrawTool.STROKE,
-                    lineWidth:8,
                     s:DrawTool.LINE,
-                    color:'orange'
+                    ...config,
+                    type:DrawTool.STROKE
                 })
             }break;
             case s.PEN:{
                 p.push([e.x,e.y])
                 shape.paint({
                     points:p,
-                    type:DrawTool.STROKE,
-                    lineWidth:2,
                     s:DrawTool.LINE,
-                    color:'green'
+                    ...config,
+                    type:DrawTool.STROKE
                 })
             }break;
             default:{
@@ -106,50 +101,72 @@ event(canvas,'mousedown',function(e){
         off(document,'mouseup')
         //渲染一次状态栏
 
-        render(shape.stack.d.map((d,i) => {
-            return d.d.s
-        }),'#tool .stack .shape-list','li')
-
-        //取消事件，
+        // render(shape.stack.d.map((d,i) => {
+        //     return d.d.s
+        // }),'#tool .stack .shape-list','li')
 
     })
 })
 event(document.body,'load',function(e) {
-    {
-        selectAll('#tool .shape p').forEach((d,i) => {
 
-            d.onclick = function(e){
-                shapes = s[this.dataset.shape]
-                selectAll('#tool .shape p').forEach((d,i) => {
-                    d.style.background = '#003333'
-                })
-                this.style.background = 'red'
-            }
-        })
+    //shape cmd
+    selectAll('#tool .shape p').forEach((d,i) => {
 
-        selectAll('#tool .draggable').forEach((d,i) => {
+        d.onclick = function(e){
+            shapes = s[this.dataset.shape]
+            selectAll('#tool .shape p').forEach((d,i) => {
+                css(d,{background:'#003333'})
+            })
+                css(d,{background:'red'})
+        }
+    })
+    //tool cmd
+    selectAll('#tool .draggable').forEach((d,i) => {
             d.onmousedown = function(e){
                 //获取宽高
-                const width = this.offsetWidth
-                const height = this.offsetHeight
+                const width = attr(this,'offsetWidth')
+                const height = attr(this,'offsetHeight')
                 //计算偏移
-                const disX = e.x - this.offsetLeft
-                const disY = e.y - this.offsetTop
+                const disX = e.x - attr(this,'offsetLeft')
+                const disY = e.y - attr(this,'offsetTop')
 
-                document.onmousemove = (e) => {
-                    this.style.position = 'absolute'
-                    this.style.left = e.x - disX + 'px'
-                    this.style.top = e.y - disY + 'px'
-
-                }
-                document.onmouseup = function(){
-                    document.onmouseup = null
-                    document.onmousemove = null
-                }
+                event(document,'mousemove',(e) => {
+                    css(this,{
+                        position:'absolute',
+                        left:e.x - disX + 'px',
+                        top:e.y - disY + 'px'
+                    })
+                })
+                event(document,'mouseup',function(){
+                    off(document,['mousemove','mouseup'])
+                })
             }
         })
-    }
+    //props cmd
+    initProps()
+    selectAll('#tool .conf .props').forEach((d,i) => {
+        event(d,'input',function(e){
+            set(config,get(d, 'dataset.props'),get(d,'value'))
+        })
+    })
+    //cancel event bubble
+    selectAll('#tool .conf input').forEach((d,i) => {
+        event(d,'mousedown',(e) => {
+            e.cancelBubble = true
+        })
+    })
+
 })
+
+function initProps(){
+    const conf = selectAll('#tool .conf .props')
+    conf.forEach((d,i) => {
+        // config[get(d, 'dataset.props')]
+        get(d,'value')
+        set(config,get(d, 'dataset.props'),get(d,'value'))
+    })
+    console.log(config);
+}
 
 
 

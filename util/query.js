@@ -8,14 +8,19 @@ function event(dom,event,fn){
     dom['on'+event] = fn
 }
 function off(dom,event){
-    dom['on'+event] = null
+    if(Object.prototype.toString.call(event) == '[object Array]'){
+        for(let i in event){
+            dom['on'+event[i]] = null
+        }
+    }else{
+        dom['on'+event] = null
+    }
+
 }
 function render(lists,dom,tagName){
-    console.log(lists);
     const s = select(dom)
     let tag = ''
     for(let i in lists){
-        console.log(tag);
         tag += `<${tagName}>${lists[i]}</${tagName}>`
     }
     s.innerHTML = tag
@@ -30,9 +35,32 @@ function renderAll(lists,dom,tagName){
         d.innerHTML = tag
     })
 }
+function css(dom,css){
+    for(let i in css){
+        transformCamelCase(i)
+        dom['style'][i] = css[i]
+    }
+}
+function attr(dom,name){
+    return dom[name]
+}
+function transformCamelCase(cameCase){
+    return cameCase.replace(/[A-Z]/g,(d) => {
+        console.log(d);
+    })
+}
 
-const Panel = {select,selectAll,event,off,render,renderAll}
+//class set and get fn
+function get(obj,name){
+    let props = name.replace(/^/,'[\'').replace(/$/,'\']').replace(/\./g,'\'][\'')
+    return eval(`obj${props}`)
+}
+function set(obj,name,val){
+    obj[name] = val
+}
+
+const Panel = {select,selectAll,event,off,render,renderAll,css,attr,set,get}
 export default Panel
 export {
-    select,selectAll,event,off,render,renderAll
+    select,selectAll,event,off,render,renderAll,css,attr,set,get
 }

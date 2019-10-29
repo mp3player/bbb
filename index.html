@@ -29,29 +29,39 @@
         </div>
         <!--图形配置-->
         <div class="conf draggable">
-            <ul>
-                <li>
-                    <span>颜色</span>
-                    <span>
-                        <input type="text"  class="color normal-input" value="#ff0000" >
-                    </span>
-                </li>
-                <li>
-                    <span>线宽</span>
-                    <span>
-                        <input type="text" class="line-width normal-input">
-                    </span>
-                </li>
-                <li>
-                    <span>透明度</span>
-                    <span>
-                        <input type="text" class="opacity normal-input">
-                    </span>
-                </li>
-                <li>
-                    <span>shadow</span>
-                </li>
-            </ul>
+            <div>
+                <p>basic</p>
+                <ul>
+                    <li>
+                        <span>颜色</span>
+                        <input type="text" data-props="color" data-draggable="false" class="props normal-input" value="#ff0000" >
+                    </li>
+                    <li>
+                        <span>线宽</span>
+                        <input type="text" data-props="lineWidth" data-draggable="false" class="props normal-input">
+                    </li>
+                    <li>
+                        <span>透明度</span>
+                        <input type="text" data-props="alpha" data-draggable="false" class="props normal-input">
+                    </li>
+                    <li>
+                        <span>fill type</span>
+                        <input type="text" data-props="type" data-draggable="false" class="props normal-input">
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <p>shadow</p>
+                <ul>
+                    <li>
+                        <span>fill</span>
+                        <span>
+                            <input type="text" data-props="color" data-draggable="false" class="props normal-input" value="#ff0000" >
+                        </span>
+                    </li>
+
+                </ul>
+            </div>
         </div>
     </div>
 </body>
