@@ -42,7 +42,7 @@ const s = {
     PEN:'PEN'
 }
 let shapes = s.LINE
-console.log(shape.stack);
+
 event(canvas,'mousedown',function(e){
     let x = e.x
     let y = e.y
@@ -114,40 +114,42 @@ event(canvas,'mousedown',function(e){
 
     })
 })
-document.body.onload = () => {
-    selectAll('#tool .shape p').forEach((d,i) => {
+event(document.body,'load',function(e) {
+    {
+        selectAll('#tool .shape p').forEach((d,i) => {
 
-        d.onclick = function(e){
-            shapes = s[this.dataset.shape]
-            selectAll('#tool .shape p').forEach((d,i) => {
-                d.style.background = '#003333'
-            })
-            this.style.background = 'red'
-        }
-    })
-
-    selectAll('#tool .draggable').forEach((d,i) => {
-        d.onmousedown = function(e){
-            //获取宽高
-            const width = this.offsetWidth
-            const height = this.offsetHeight
-            //计算偏移
-            const disX = e.x - this.offsetLeft
-            const disY = e.y - this.offsetTop
-
-            document.onmousemove = (e) => {
-                this.style.position = 'absolute'
-                this.style.left = e.x - disX + 'px'
-                this.style.top = e.y - disY + 'px'
-
+            d.onclick = function(e){
+                shapes = s[this.dataset.shape]
+                selectAll('#tool .shape p').forEach((d,i) => {
+                    d.style.background = '#003333'
+                })
+                this.style.background = 'red'
             }
-            document.onmouseup = function(){
-                document.onmouseup = null
-                document.onmousemove = null
+        })
+
+        selectAll('#tool .draggable').forEach((d,i) => {
+            d.onmousedown = function(e){
+                //获取宽高
+                const width = this.offsetWidth
+                const height = this.offsetHeight
+                //计算偏移
+                const disX = e.x - this.offsetLeft
+                const disY = e.y - this.offsetTop
+
+                document.onmousemove = (e) => {
+                    this.style.position = 'absolute'
+                    this.style.left = e.x - disX + 'px'
+                    this.style.top = e.y - disY + 'px'
+
+                }
+                document.onmouseup = function(){
+                    document.onmouseup = null
+                    document.onmousemove = null
+                }
             }
-        }
-    })
-}
+        })
+    }
+})
 
 
 
