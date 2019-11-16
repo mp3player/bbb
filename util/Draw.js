@@ -1,6 +1,6 @@
 import Shape from "./Shape";
-import Queue from "./Queue";
-import Stack from "./Stack";
+import Queue from "./Queue/Queue";
+import Stack from "./Stack/Stack";
 
 export default class Draw extends Shape{
     constructor(pen){
@@ -9,7 +9,6 @@ export default class Draw extends Shape{
         this.canvas = this.pen.canvas
         this.stack = new Stack()
     }
-
     paint(conf) {
         let c = null
         if(!conf)

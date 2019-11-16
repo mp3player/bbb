@@ -1,0 +1,32 @@
+.tool-panel{
+  &,.color-picker{
+    width:500px;height:400px;
+    .box{
+      display: flex;height:100%;border:1px solid cyan;
+      .color{
+        height:100%;width:400px;display:flex;
+        .color-panel-part{
+          height:100%;width:330px;margin:0 5px;
+          .color-layers{
+            width:100%;height:100%;
+          }
+        }
+        .color-panel-rect{
+          height: 100%;flex-grow:1;background:linear-gradient(to bottom,hsl(0,100%,50%),hsl(120,100%,50%),hsl(240,100%,50%),hsl(360,100%,50%));margin:0 5px;
+        }
+      }
+      .color-value{
+        background:pink;flex-grow: 1;height:100%;
+        p.color-value-input{
+          display: flex;height:25px;border:1px solid purple;margin:5px;
+          span{
+            display: inline-block;width:30px;text-align: center;line-height: 25px;
+          }
+          input{
+            width:50px;flex-grow: 1;height:20px;border:none;outline:none;margin-top:2px;margin-right:5px;border-radius:2px;padding-left:2px;
+          }
+        }
+      }
+    }
+  }
+}

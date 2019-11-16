@@ -46,9 +46,11 @@ function attr(dom,name){
 }
 function transformCamelCase(cameCase){
     return cameCase.replace(/[A-Z]/g,(d) => {
-        console.log(d);
+        return d.toLowerCase() + '-'
     })
 }
+
+//cannel bubble
 
 //class set and get fn
 function get(obj,name){
@@ -59,8 +61,8 @@ function set(obj,name,val){
     obj[name] = val
 }
 
-const Panel = {select,selectAll,event,off,render,renderAll,css,attr,set,get}
-export default Panel
+const Query = {select,selectAll,event,off,render,renderAll,css,attr,set,get}
+export default Query
 export {
     select,selectAll,event,off,render,renderAll,css,attr,set,get
 }

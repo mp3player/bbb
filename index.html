@@ -34,19 +34,19 @@
                 <ul>
                     <li>
                         <span>颜色</span>
-                        <input type="text" data-props="color" data-draggable="false" class="props normal-input" value="#ff0000" >
+                        <input type="text" data-props="color" data-draggable="false" class="props normal-input cancel-bubble" value="#ff0000" >
                     </li>
                     <li>
                         <span>线宽</span>
-                        <input type="text" data-props="lineWidth" data-draggable="false" class="props normal-input">
+                        <input type="number" data-props="lineWidth" data-draggable="false" class="props normal-input cancel-bubble">
                     </li>
                     <li>
                         <span>透明度</span>
-                        <input type="text" data-props="alpha" data-draggable="false" class="props normal-input">
+                        <input type="number" step=".01" min="0" max="1" data-props="alpha" data-draggable="false" class="props normal-input cancel-bubble">
                     </li>
                     <li>
                         <span>fill type</span>
-                        <input type="text" data-props="type" data-draggable="false" class="props normal-input">
+                        <input type="text" data-props="type" data-draggable="false" class="props normal-input cancel-bubble">
                     </li>
                 </ul>
             </div>
@@ -56,11 +56,57 @@
                     <li>
                         <span>fill</span>
                         <span>
-                            <input type="text" data-props="color" data-draggable="false" class="props normal-input" value="#ff0000" >
+                            <input type="text" data-props="color" data-draggable="false" class="props normal-input cancel-bubble" value="#ff0000" >
                         </span>
                     </li>
-
                 </ul>
+            </div>
+        </div>
+        <div class="tool-panel color-picker draggable">
+            <div class="box">
+                <div class="left color">
+                    <div class="color-panel-part cancel-bubble">
+                        <div class="color-layers">
+                            <canvas id="color-picker-canvas"></canvas>
+                        </div>
+                    </div>
+                    <div class="color-panel-rect cancel-bubble"></div>
+                </div>
+                <div class="right color-value">
+                    <div class="rgb">
+                        <p class="color-value-input">
+                            <span>R</span>
+                            <input type="text" id="r" value="255" class="cancel-bubble">
+                        </p>
+                        <p class="color-value-input">
+                            <span>G</span>
+                            <input type="text" id="g" value="255" class="cancel-bubble">
+                        </p>
+                        <p class="color-value-input">
+                            <span>B</span>
+                            <input type="text" id="b" value="255" class="cancel-bubble">
+                        </p>
+                        <p class="color-value-input">
+                            <span>A</span>
+                            <input type="text" id="a" value="255" class="cancel-bubble">
+                        </p>
+                    </div>
+                    <div class="hsl">
+                        <p class="color-value-input">
+                            <span>H</span>
+                            <input type="text" id="h" value="0" class="cancel-bubble">
+                        </p>
+                        <p class="color-value-input">
+                            <span>S</span>
+                            <input type="text" id="s" value="100%" class="cancel-bubble">
+                        </p>
+                        <p class="color-value-input">
+                            <span>L</span>
+                            <input type="text" id="l" value="100%" class="cancel-bubble">
+                        </p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

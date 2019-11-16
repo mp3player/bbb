@@ -2,7 +2,7 @@
   width:100%;height:100%;position:absolute;top:0;left:0;pointer-events: none;user-select: none;
   *{pointer-events: auto;}
   .shape{
-    background:#003333;width:200px;color:white;position:absolute;top:0;left:0;
+    background:#003333;width:200px;color:white;position:absolute;top:500px;left:500px;
     p{height:40px;line-height: 40px;text-align: center;border:1px solid #E3E3E3;transition:all .2s linear;cursor: pointer;}
   }
   .attr{
@@ -31,8 +31,8 @@
           &:nth-child(1){display: inline-block;min-width: 80px;}
         }
         input{
-          &[type=text]{
-            height:30px;margin-top:5px;
+          &.props{
+            height:30px;margin-top:5px;text-align: center;font-size:16px;width:100px;
           }
           &[type=radio]{
             margin:0 5px;position:relative;top:2px;outline: none;

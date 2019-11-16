@@ -1,8 +1,11 @@
 import DrawTool from './util/DrawTool'
-import {select, selectAll, event, off, render, css, attr, set,get} from "./util/query";
+import {select, selectAll, event, off, render, css, attr, set,get} from "./util/query/query";
+import {ColorPicker} from "./util/color/ColorPicker";
 
 import './scss/tool.scss'
 import './scss/normal.scss'
+import './scss/tool-panel.scss'
+import {Color} from "./util/color/Color";
 
 const canvas = document.querySelector('#canvas')
 canvas.width = innerWidth
@@ -11,7 +14,8 @@ canvas.style.background = 'pink'
 
 const pen = canvas.getContext('2d')
 
-var shape = new DrawTool(pen)
+let shape = new DrawTool(pen)
+
 
 shape.paint({
     color:'purple',
@@ -42,7 +46,7 @@ const s = {
     PEN:'PEN'
 }
 let shapes = s.LINE
-const config = {color:'',lineWidth:0,alpha:1,type:DrawTool.FILL}
+const config = {color:'',lineWidth:0,alpha:1,type:DrawTool.STROKE}
 
 event(canvas,'mousedown',function(e){
     let x = e.x
@@ -99,19 +103,12 @@ event(canvas,'mousedown',function(e){
     event(document,'mouseup',function(){
         off(document,'mousemove')
         off(document,'mouseup')
-        //渲染一次状态栏
-
-        // render(shape.stack.d.map((d,i) => {
-        //     return d.d.s
-        // }),'#tool .stack .shape-list','li')
-
     })
 })
 event(document.body,'load',function(e) {
-
+    let picker = new ColorPicker('color-picker-canvas',330,400)
     //shape cmd
     selectAll('#tool .shape p').forEach((d,i) => {
-
         d.onclick = function(e){
             shapes = s[this.dataset.shape]
             selectAll('#tool .shape p').forEach((d,i) => {
@@ -129,33 +126,54 @@ event(document.body,'load',function(e) {
                 //计算偏移
                 const disX = e.x - attr(this,'offsetLeft')
                 const disY = e.y - attr(this,'offsetTop')
-
+                css(d,{opacity:.3})
                 event(document,'mousemove',(e) => {
                     css(this,{
                         position:'absolute',
                         left:e.x - disX + 'px',
                         top:e.y - disY + 'px'
                     })
+                    if(e.x - disX < 0){
+                        css(this,{
+                            left:'0px'
+                        })
+                    }
+                    if(e.y - disY < 0){
+                        css(this,{
+                            top:'0px'
+                        })
+                    }
+                    if(e.x - disX > innerWidth - width){
+                        css(this,{
+                            left:innerWidth - width + 'px'
+                        })
+                    }
+                    if(e.y - disY > innerHeight - height){
+                        css(this,{
+                            top:innerHeight - height + 'px'
+                        })
+                    }
+
                 })
                 event(document,'mouseup',function(){
                     off(document,['mousemove','mouseup'])
+                    css(d,{opacity:1})
                 })
             }
         })
     //props cmd
-    initProps()
+    // initProps()
     selectAll('#tool .conf .props').forEach((d,i) => {
         event(d,'input',function(e){
             set(config,get(d, 'dataset.props'),get(d,'value'))
         })
     })
     //cancel event bubble
-    selectAll('#tool .conf input').forEach((d,i) => {
+    selectAll('#tool .cancel-bubble').forEach((d,i) => {
         event(d,'mousedown',(e) => {
             e.cancelBubble = true
         })
     })
-
 })
 
 function initProps(){
@@ -165,7 +183,6 @@ function initProps(){
         get(d,'value')
         set(config,get(d, 'dataset.props'),get(d,'value'))
     })
-    console.log(config);
 }
 
 
