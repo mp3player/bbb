@@ -47,6 +47,7 @@ export default class Draw extends Shape{
         this.pen.globalAlpha = config.alpha ? config.alpha : 1
         this.pen.lineCap = config.lineCap ? config.lineCap : 'round'
         this.pen.lineJoin = config.lineJoin ? config.lineJoin : 'round'
+        this.pen.setLineDash(config.lineDash)
 
         var p = config.points
         for(var i in p){
@@ -56,9 +57,7 @@ export default class Draw extends Shape{
 
         if(type == Shape.FILL)this.pen.fill()
         if(type == Shape.STROKE)this.pen.stroke()
-
-        this.pen.closePath()
-
+        
         this.pen.closePath()
         this.pen.restore()
 

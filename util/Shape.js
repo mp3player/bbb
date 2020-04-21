@@ -194,7 +194,8 @@ export default class Shape {
         var o = [config.origin[0],config.origin[1]]
         var r = config.radius
 
-        const segments = config.segments ? config.segments : (r * (angleOffset * Math.PI / 180))
+        const segments = config.segments ? config.segments : (r * 2 * Math.PI)
+        console.log(r,segments)
 
         for(var i=0;i<=segments;i++){
             var cos = Math.cos(angleOffset / segments * i)
@@ -214,6 +215,6 @@ export default class Shape {
         return {...conf,...config,points}
     }
     ellipsis(config){
-
+        
     }
 }
