@@ -1,2 +1,7 @@
+rollup.config.js
+text.html
+index.js
+dist
 node_modules
+.idea
 package-lock.json

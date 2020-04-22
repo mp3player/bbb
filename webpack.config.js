@@ -5,7 +5,10 @@ module.exports = {
 	entry:'./main.js',
 	output:{
 		path:path.resolve(__dirname,'dist'),
-		filename:'bundle.js'
+		// library:"CustomShape",
+		// libraryExport:'default',
+		filename:'bundle.js',
+		// libraryTarget: 'umd'
 	},
 	module:{
 		rules:[

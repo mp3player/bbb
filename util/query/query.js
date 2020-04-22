@@ -53,16 +53,16 @@ function transformCamelCase(cameCase){
 //cannel bubble
 
 //class set and get fn
-function get(obj,name){
-    let props = name.replace(/^/,'[\'').replace(/$/,'\']').replace(/\./g,'\'][\'')
-    return eval(`obj${props}`)
-}
+// function get(obj,name){
+//     let props = name.replace(/^/,'[\'').replace(/$/,'\']').replace(/\./g,'\'][\'')
+//     return eval(`obj${props}`)
+// }
 function set(obj,name,val){
     obj[name] = val
 }
 
-const Query = {select,selectAll,event,off,render,renderAll,css,attr,set,get}
+const Query = {select,selectAll,event,off,render,renderAll,css,attr,set}
 export default Query
 export {
-    select,selectAll,event,off,render,renderAll,css,attr,set,get
+    select,selectAll,event,off,render,renderAll,css,attr,set,//get
 }

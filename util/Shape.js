@@ -9,6 +9,7 @@ export default class Shape {
     static ARC = 'arc'
     static RECT = 'rect'
     static CIRCLE = 'circle'
+    static TEXT = 'text'
 
     constructor(){
         this.config = {
@@ -20,10 +21,10 @@ export default class Shape {
             lineCap:'round',
             lineJoin:'round',
             lineDash:[0,0],
-            type:Shape.STROKE
+            type:Shape.STROKE,
+            timer:null
         }
     }
-
     line(config){
         /**@param config
          * config
@@ -195,7 +196,6 @@ export default class Shape {
         var r = config.radius
 
         const segments = config.segments ? config.segments : (r * 2 * Math.PI)
-        console.log(r,segments)
 
         for(var i=0;i<=segments;i++){
             var cos = Math.cos(angleOffset / segments * i)
@@ -216,5 +216,18 @@ export default class Shape {
     }
     ellipsis(config){
         
+    }
+    //text
+    text(config){
+        const conf = this.config
+        let textConfig = {
+            x:0,
+            y:0,
+            str:'',
+            align:'left',
+            size:20,
+            family:'Arial'
+        }
+        return {...conf,...textConfig,...config}
     }
 }

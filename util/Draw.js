@@ -17,6 +17,7 @@ export default class Draw extends Shape{
             c = conf
         var config = null
         switch (c.s) {
+            
             case Shape.POLYGON:{
                 config = this.polygon(c)
             }break;
@@ -32,41 +33,69 @@ export default class Draw extends Shape{
             case Shape.CIRCLE:{
                 config = this.circle(c)
             }break;
+            case Shape.TEXT:{
+                config = this.text(c)
+            }break;
             default:{
                 config = c ? c : this.config
             }
         }
         var type = config.type
-        this.pen.save()
-        this.pen.beginPath()
-        if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
-        if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
+        if(config.s == Shape.TEXT){
+            //TODO
+            //文本，临时加上，需要完善结构
 
-        //config the shape props
-        this.pen.lineWidth = config.lineWidth ? config.lineWidth : 1
-        this.pen.globalAlpha = config.alpha ? config.alpha : 1
-        this.pen.lineCap = config.lineCap ? config.lineCap : 'round'
-        this.pen.lineJoin = config.lineJoin ? config.lineJoin : 'round'
-        this.pen.setLineDash(config.lineDash)
+            this.pen.save()
+            this.pen.beginPath()
+            if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
+            if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
+            this.pen.font = `${config.size}px ${config.family}`
+            this.pen.globalAlpha = config.alpha
+            this.pen.textAlign = config.align
+            this.pen.textBaseLine = 'top'
+   
+            if(type == Shape.FILL)this.pen.fillText(config.str,config.x,config.y)
+            if(type == Shape.STROKE)this.pen.strokeText(config.str,config.x,config.y)
 
-        var p = config.points
-        for(var i in p){
-            if(i == 0) this.pen.moveTo(p[i][0],p[i][1])
-            else this.pen.lineTo(p[i][0],p[i][1])
+            this.pen.restore()
+
+            this.stack.put(config)
+        }else{
+            
+            this.pen.save()
+            this.pen.beginPath()
+            if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
+            if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
+            
+            //config the shape props
+            this.pen.lineWidth = config.lineWidth ? config.lineWidth : 1
+            this.pen.globalAlpha = config.alpha ? config.alpha : 1
+            this.pen.lineCap = config.lineCap ? config.lineCap : 'round'
+            this.pen.lineJoin = config.lineJoin ? config.lineJoin : 'round'
+            this.pen.setLineDash(config.lineDash ? config.lineDash : [0,0])
+    
+            var p = config.points
+            for(var i in p){
+                if(i == 0) this.pen.moveTo(p[i][0],p[i][1])
+                else this.pen.lineTo(p[i][0],p[i][1])
+            }
+    
+            if(type == Shape.FILL)this.pen.fill()
+            if(type == Shape.STROKE)this.pen.stroke()
+            
+            this.pen.closePath()
+            this.pen.restore()
+    
+            //add these config to stack
+    
+            this.stack.put(config)
+
         }
-
-        if(type == Shape.FILL)this.pen.fill()
-        if(type == Shape.STROKE)this.pen.stroke()
         
-        this.pen.closePath()
-        this.pen.restore()
-
-        //add these config to stack
-
-        this.stack.put(config)
 
     }
     repaint(c){
+        // this.pen.clearRect(0,0,this.pen.canvas.width,this.pen.canvas.height)
         var config = null
         switch (c.s) {
             case Shape.POLYGON:{
@@ -78,38 +107,56 @@ export default class Draw extends Shape{
             case Shape.ARC:{
                 config = this.arc(c)
             }break;
+            case Shape.TEXT:{
+                config = this.text(c)
+            }break;
             default:{
                 config = c
             }
         }
 
         var type = config.type
+        if(config.s == Shape.TEXT){
+            //TODO
+            //文本，临时加上，需要完善结构
+            this.pen.save()
+            this.pen.fillStyle = config.color ? config.color : 'black'
+            this.pen.font = `${config.size}px ${config.family}`
+            this.pen.globalAlpha = config.alpha
+            this.pen.textAlign = config.align
+            this.pen.textBaseLine = 'top'
+   
+            this.pen.fillText(config.str,config.x,config.y)
 
-        this.pen.save()
+            this.pen.restore()
 
-        this.pen.beginPath()
-        if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
-        if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
+        }else{
+            this.pen.save()
 
-        //config the shape props
-        this.pen.lineWidth = config.lineWidth ? config.lineWidth : 1
-        this.pen.globalAlpha = config.alpha ? config.alpha : 1
-        this.pen.lineCap = config.lineCap ? config.lineCap : 'round'
-        this.pen.lineJoin = config.lineJoin ? config.lineJoin : 'round'
-
-        var p = config.points
-        for(var i in p){
-            if(i == 0) this.pen.moveTo(p[i][0],p[i][1])
-            else this.pen.lineTo(p[i][0],p[i][1])
+            this.pen.beginPath()
+            if(type == Shape.FILL)this.pen.fillStyle = config.color ? config.color : 'black'
+            if(type == Shape.STROKE)this.pen.strokeStyle = config.color ? config.color : 'black'
+    
+            //config the shape props
+            this.pen.lineWidth = config.lineWidth ? config.lineWidth : 1
+            this.pen.globalAlpha = config.alpha ? config.alpha : 1
+            this.pen.lineCap = config.lineCap ? config.lineCap : 'round'
+            this.pen.lineJoin = config.lineJoin ? config.lineJoin : 'round'
+            this.pen.setLineDash(config.lineDash)
+    
+            var p = config.points
+            for(var i in p){
+                if(i == 0) this.pen.moveTo(p[i][0],p[i][1])
+                else this.pen.lineTo(p[i][0],p[i][1])
+            }
+    
+            if(type == Shape.FILL)this.pen.fill()
+            if(type == Shape.STROKE)this.pen.stroke()
+    
+            this.pen.closePath()
+    
+            this.pen.restore()
         }
-
-        if(type == Shape.FILL)this.pen.fill()
-        if(type == Shape.STROKE)this.pen.stroke()
-
-        this.pen.closePath()
-
-        this.pen.closePath()
-        this.pen.restore()
 
     }
     out(){
